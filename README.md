@@ -26,6 +26,7 @@ scripts/
 data/                                Survey data (NOT in git -- see below)
   energyActorsDataWeighted.csv       Survey data with weights
 literature/                          Background literature (NOT in git -- local only)
+notebooks/                           Ad-hoc/one-off analyses (NOT in git -- local only)
 ```
 
 ## Reproducing the analysis
@@ -65,6 +66,9 @@ The `data/` folder is **not tracked in git**. Restore it before rendering:
   `_quarto.yaml`), so code chunks are only re-executed when the qmd or its
   upstream R sources change.
 - `literature/` is git-ignored (kept local only).
+- `notebooks/` is git-ignored (kept local only) — ad-hoc analyses that
+  produce a standalone output (e.g., exported to another project) rather
+  than feeding the manuscript.
 - `LOG.md` records what changed and why for each work session; add a new
   entry at the top rather than editing manuscript prose notes into commit
   messages.

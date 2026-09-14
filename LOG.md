@@ -26,6 +26,16 @@ political identity, and demographic controls.
 
 ## Session History
 
+### Session 2 — 2026-09-14 (Ad-hoc concern.ai.demand notebook)
+
+- Added `notebooks/concern-ai-demand-summary.qmd`: a standalone quick
+  analysis (question wording, one-row descriptive table, weighted OLS of
+  `concern.ai.demand` on `age`, `male`, `white`, `edu`, `inc`,
+  `trump.approval`, `libDem`, `conRep`) rendered to DOCX and exported to
+  the `00-narrative-learning` project (`02-ideas/00-narrative-learning/`).
+- Added `/notebooks` to `.gitignore` — this and future one-off notebooks
+  stay local-only, not tracked in this repo.
+
 ### Session 1 — 2026-09-14 (Restructure to project-files template)
 
 - Restructured the project folder from its earlier ad-hoc layout
