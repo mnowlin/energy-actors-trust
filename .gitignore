@@ -14,3 +14,11 @@ nowlin-style-profile.md
 references.bib
 american-political-science-association.csl
 .quarto
+
+/.quarto/
+**/*.quarto_ipynb
+
+# _output/ is intentionally tracked in git (see README.md) so the rendered
+# manuscript is available without re-running R/Quarto; only the freeze cache
+# is ignored here.
+/_freeze/

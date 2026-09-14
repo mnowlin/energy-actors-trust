@@ -36,6 +36,67 @@ format:
 source("scripts/analysis.R")
 ```
 
+<!-- 
+This paper is intended to be submitted to the Policy Studies Journal (PSJ) as a research note. The guidelines for a research note, from the PSJ website, are: PSJ is now accepting short articles of 3,000-5,000 words, roughly half the length of our typical manuscripts. Short articles will meet the same high standards for theoretical depth and methodological sophistication as full PSJ articles. The difference is that short articles offer a narrower contribution, concisely communicating new ideas or approaches in policy research. There are two options for short articles: A research note presents empirical data and analysis, ideally a novel methodology or novel application of a method, or an attempt to replicate previous empirical findings. 
+The contribution of this paper is a novel application of Latent Class Analysis to trust in policy actors 
+-->
+
+
+# Introduction 
+
+In this paper, I examine the patterns of whom the US public trusts with regard to energy policy. Specifically, I use Latent Class Analysis (LCA) to demonstrate those patterns. Next, I examine how demographics and political beliefs are associated with specific classes of trust who are highly trusted. Finally, I explore if demographics, political beliefs, and classes of trusted actors are associated with concern regarding several energy policy issues.   
+
+# Public Trust in Policy Actors 
+
+# Data and Methods
+
+## Latent Class Analysis
+
+```{r}
+#| label: tbl-lca-model-comparison
+#| tbl-cap: "Fit statistics for competing latent class solutions (k = 2-9)"
+lca_model_comparison <- read.csv("data/lca_model_comparison.csv")
+knitr::kable(lca_model_comparison,
+             col.names = c("Classes (k)", "BIC", "AIC", "Log-Likelihood",
+                           "Entropy", "Smallest Class (%)"))
+```
+
+# Results
+
+```{r}
+#| label: tbl-lca-class-sizes
+#| tbl-cap: "Latent class sizes"
+knitr::kable(lca_class_size_tbl,
+             col.names = c("Class", "N", "Percent"))
+```
+
+```{r}
+#| label: fig-lca-profile
+#| fig-cap: "Probability of high trust (7-10 on a 0-10 scale) in each actor, by latent class"
+lca_profile_plot
+```
+
+```{r}
+#| label: tbl-mnl
+#| tbl-cap: "Multinomial logit coefficient estimates predicting trust-class membership (reference class: Trust in Scientists & Environmental Groups, 33.2%). Standard errors are in parentheses."
+sig_stars <- c("†" = 0.1, "*" = 0.05, "**" = 0.01, "***" = 0.001)
+modelsummary::modelsummary(list(" " = mnl_fit), output = "markdown",
+                            statistic = "std.error", stars = sig_stars,
+                            shape = term ~ response)
+```
+
+```{r}
+#| label: tbl-concern
+#| tbl-cap: "Validity check: weighted regression predicting concern about pollution from trust-class membership"
+modelsummary::modelsummary(list("Concern about Pollution" = concern_fit), output = "markdown",
+                            statistic = "std.error", stars = sig_stars)
+```
+
+# Discussion
+
+
+# Conclusion 
+
 \newpage
 
 # References

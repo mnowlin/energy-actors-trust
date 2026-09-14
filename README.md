@@ -19,25 +19,40 @@ _quarto.yaml                         Quarto project config
 _output/                             Rendered HTML/PDF/DOCX (tracked in git)
 custom-reference-doc.docx            Word reference template used for the DOCX output
 LOG.md                               Running session log (newest entry first)
+renv.lock, renv/, .Rprofile          renv: locked package versions for reproducibility
 scripts/
-  analysis.R                         Sourced by the qmd: loads data and builds the
-                                       tables/figures/objects used in the manuscript
+  analysis.R                         Sourced by the qmd: LCA of trust in energy actors,
+                                       multinomial logit (class ~ demographics/politics),
+                                       and a concern-about-pollution validity check
+  lca-model-selection.R              Standalone (not sourced by the qmd -- slow): compares
+                                       LCA solutions k = 2-9, regenerates the csv below
   export-cited-refs.R                Pre-render step: trims the master .bib to cited keys
 data/                                Survey data (NOT in git -- see below)
   energyActorsDataWeighted.csv       Survey data with weights
+  lca_model_comparison.csv           Cached fit statistics from lca-model-selection.R
 literature/                          Background literature (NOT in git -- local only)
 notebooks/                           Ad-hoc/one-off analyses (NOT in git -- local only)
 ```
 
 ## Reproducing the analysis
 
-Requires R with: `dplyr`, `tidyr`, `ggplot2` (add packages here as the
-analysis grows; use `renv` to lock versions).
+Uses `renv` to lock package versions (`poLCA`, `nnet`, `estimatr`,
+`modelsummary`, `broom`, `gt`, `dplyr`, `tidyr`, `ggplot2`). Run
+`renv::restore()` to install the locked versions.
 
 - **Manuscript:** `quarto render` → outputs to `_output/`
   (HTML, PDF, and DOCX; the DOCX uses `custom-reference-doc.docx`)
 - **Analysis only:** `Rscript scripts/analysis.R` builds the analysis
-  objects without rendering the manuscript.
+  objects (LCA fit, multinomial logit, concern validity-check regression)
+  without rendering the manuscript.
+- **LCA class-count model comparison** (slow, not run automatically):
+  `Rscript scripts/lca-model-selection.R` regenerates
+  `data/lca_model_comparison.csv`.
+
+Note: `survey` cannot currently be installed on this machine (its
+`RcppArmadillo` dependency fails to compile — a local gfortran toolchain
+issue, not a code problem), so weighted regressions use
+`estimatr::lm_robust` instead.
 
 ## Data
 
@@ -50,7 +65,8 @@ The `data/` folder is **not tracked in git**. Restore it before rendering:
   local/national news), energy concerns (cost, reliability, pollution, AI
   demand, loss), political identity (`democrat`, `republican`, `libDem`,
   `conRep`, `trump.approval`), and controls (`age`, `male`, `white`, `edu`,
-  `college`, `inc`).
+  `college`, `inc`). `scripts/analysis.R` derives a 4-class `trust_class`
+  latent variable from the 15 trust items via LCA (see LOG.md, Session 3).
 
 ## Notes
 
